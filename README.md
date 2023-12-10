@@ -16,10 +16,16 @@
 ### Starting point  
 1. using tabzilla as the startin point
 2.  Set up the python environment:  
-    `conda create -n tabz python==3.10`  
-   `conda activate tabz`  
-   `python -m pip install -r pip_requirements.txt`
-3. Download / preprocess data:  
-   `python tabzilla_data_preprocessing.py --process_all`
-4. create a model (needs experiment config, model type, and dataset directory)
-   `python tabzilla_experiment.py --experiment_config tabzilla_experiment_config.yml --model_name XGBoost --dataset_dir datasets/openml__acute-inflammations__10089`  
+    ```
+    conda create -n tabz python==3.10 -y  
+    conda activate tabz 
+    python -m pip install -r pip_requirements.txt  
+    ```
+4. Download / preprocess data:  
+   ```
+   python tabzilla_data_preprocessing.py --process_all
+   ```
+6. create a model (needs experiment config, model type, and dataset directory)  
+   ```
+   python tabzilla_experiment.py --experiment_config tabzilla_experiment_config.yml --model_name XGBoost --dataset_dir datasets/openml__acute-inflammations__10089
+   ```
