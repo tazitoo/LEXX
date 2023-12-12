@@ -31,3 +31,6 @@ Using tabzilla as the starting point.
    ```
    python tabzilla_experiment.py --experiment_config tabzilla_experiment_config.yml --model_name XGBoost --dataset_dir datasets/openml__acute-inflammations__10089
    ```
+
+### Notes  
+-- if you want to run a NAM, you need to clone the [nam repo](https://github.com/AmrMKayid/nam) and pip install it.  Requires GPU(?)
