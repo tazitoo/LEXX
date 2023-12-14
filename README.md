@@ -40,8 +40,21 @@ Get end to end process working for 1 dataset, 1 model type (e.g. XGBoost) and 1 
 - [x] build model (see above)
 - [ ] save model (some work - will save to `Tabzilla/output/<model_type>/<dataset name>/`  
 - [ ] or save optuna HPs?  (then we can do train/test split again, save them, and refit)  
-- [ ] use model + test split + XAI method + HP tuning to generate known ranked local attributions  
+- [ ] generate train/test split for dataset using <sic> `split_indeces.npy.gz`
+- [ ] XAI method (fastSHAP [1](https://github.com/iancovert/fastshap) [2](https://github.com/AnotherSamWilson/fastshap)- better version(s) of kernelSHAP) + `n_samples` to generate known ranked local attributions
+- [ ] add "best" explanations (e.g. [fastTreeSHAP](https://github.com/linkedin/fasttreeshap)) and worst (random)
+- [ ] calculation of metric over the ranked set
+- [ ] measure of XAI ranking to known ranking
+- [ ] repeats
 
 
 ### Notes  
 -- if you want to run a NAM, you need to clone the [nam repo](https://github.com/AmrMKayid/nam) and pip install it.  Requires GPU(?) Need to add this to `pip-requirements.txt` ...
+
+### Contributions from this work  
+ - A flexible framework to do large scale experimentation for post-hoc XAI
+ - Framework to generate a known ranked set of explanations from a set of HPs
+ - These frameworks are used in tandem to assess the capability of current XAI faithfulness metrics
+   - We link when faithfulness breaks down (whether it's caused by the XAI method or the metric itself)  
+   - We identify correlations between meta-features and model complexity with mismatches in measured fidelity  
+   - These key identifiers are a step towards building a playbook for practicioners in the field  
