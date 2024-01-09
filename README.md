@@ -8,7 +8,7 @@
 
 
 ### Getting started  
-Using [my fork](https://github.com/tazitoo/tabzilla) of tabzilla as the starting point.  Use the `dev` branch, it has some capability to save the models from the HP tuning. 
+Using [my fork](https://github.com/tazitoo/tabzilla) of tabzilla as the starting point.  Use the `dev` branch, it has some capability (pytorch and XGBoost models) to save the models from the HP tuning. 
 
 1.  Set up the python environment:  
     ```
@@ -21,11 +21,24 @@ Using [my fork](https://github.com/tazitoo/tabzilla) of tabzilla as the starting
    ```
    python tabzilla_data_preprocessing.py --process_all
    ```
-3. create a model (needs experiment config, model type, and dataset directory)  
+3. Create a model (needs experiment config, model type, and dataset directory) : 
    ```
-   python tabzilla_experiment.py --experiment_config tabzilla_experiment_config.yml --model_name XGBoost --dataset_dir datasets/openml__acute-inflammations__10089
+   python tabzilla_experiment.py --dataset_dir datasets/openml__splice__45 --model_name MLP --experiment_config model_config/model_test.yml 
    ```
+4. Generate explanations (needs experiment config, model type, dataset directory, and XAI config):
+   ```
+   python fastshap_batchsize_explore.py --dataset_dir datasets/openml__splice__45 --model_name MLP --experiment_config model_config/model_test.yml  --xai_config xai_config/kernelSHAP.yml
+   ```
+      This creates a set of KernelSHAP explanations (WIP - sampling), and a set of architecture specific attributions (pytorch & XGB currently).
 
+5. [TODO] Set up class for metrics
+   - [ ] Generate random repeats
+   - [ ] Gather attributions in rank order: (random, KernelSHAP, best architecture dependend)
+   - [ ] Methods to generate faitfulness metrics (wrap in consistent API)
+   - [ ] Output values and rankings
+   - [ ] Generate plot (x-axis: name of explanation in rank order, y-axis: metric values)
+
+<!-- a normal html comment 
 ### What we will need:
 1. running an XAI method on each dataset/model along with hyper parameter tuning (using GALE?) to generate a sequence of known / ranked fidelity metrics (e.g. using KernelSHAP with a range of n_sample values)
 2. bracketing those attributions with *best* and *worst*
@@ -33,19 +46,22 @@ Using [my fork](https://github.com/tazitoo/tabzilla) of tabzilla as the starting
 4. summarization over all datasets/models/XAI methods
 5. meta-feature extraction (using pymfe)
 6. grouping over metafeatures for datasets to determine when a ranking performs well.
-   
+ -->  
 ### TODO on workflow  
 Get end to end process working for 1 dataset, 1 model type (e.g. XGBoost) and 1 XAI method.  This involves:  
 - [x] download dataset (see instructions above)  
 - [x] build model (see above)
-- [ ] save model (some work - will save to `Tabzilla/output/<model_type>/<dataset name>/`  
-- [ ] or save optuna HPs?  (then we can do train/test split again, save them, and refit)  
-- [ ] generate train/test split for dataset using <sic> `split_indeces.npy.gz`
-- [ ] XAI method (fastSHAP [1](https://github.com/iancovert/fastshap) [2](https://github.com/AnotherSamWilson/fastshap)- better version(s) of kernelSHAP) + `n_samples` to generate known ranked local attributions
-- [ ] add "best" explanations (e.g. [fastTreeSHAP](https://github.com/linkedin/fasttreeshap)) and worst (random)
+- [x] save model (some work - will save to `Tabzilla/output/<model_type>/<dataset name>/`  
+- [x] or save optuna HPs?  (then we can do train/test split again, save them, and refit)  
+- [x] generate train/test split for dataset using <sic> `split_indeces.npy.gz`
+- [x] XAI method (fastSHAP [1](https://github.com/iancovert/fastshap) [2](https://github.com/AnotherSamWilson/fastshap)- better version(s) of kernelSHAP) + `n_samples` to generate known ranked local attributions
+- [x] add "best" explanations (e.g. [fastTreeSHAP](https://github.com/linkedin/fasttreeshap)) 
+- [ ] assessment of `n_samples` via hyperparameter tuning or other assessment (e.g. cosine similarity with best explanations & set a threshold)
+- [ ] generate worst (random)
+- [ ] set up repeats using XAI yaml file
 - [ ] calculation of metric over the ranked set
-- [ ] measure of XAI ranking to known ranking
-- [ ] repeats
+- [ ] measure of XAI ranking to known ranking - or monotonicity plots (could be show in comparison to the cosine similarity againts "best" explanations
+- [ ] generate (and compare) metafeatures for attributions (assuming they are not the same as those for the input features)
 
 
 ### Notes  
