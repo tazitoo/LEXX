@@ -4,8 +4,8 @@ from pathlib import Path
 
 # Import all openml preprocessor modules.
 # NOTE: To import datasets from sources other than openml, add them using a new module
-from tabzilla_preprocessors_openml import preprocessor_dict
-from tabzilla_preprocessors import preprocessor_dict_local
+from preprocessors_openml import preprocessor_dict
+from preprocessors import preprocessor_dict_local
 
 dataset_path = Path("datasets")
 
