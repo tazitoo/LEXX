@@ -12,12 +12,13 @@ The preprocessor function must return a dictionary with the following keys:
     - target_type: can be "binary", "classification", or "regression
     - num_classes: is '1', or ">2" (...so off by one compared to my instinct)
 '''
-import functools
+# import functools
 
 import numpy as np
-import openml
-import pandas as pd
-from tabzilla_preprocessor_utils import dataset_preprocessor
+
+# import openml
+# import pandas as pd
+from preprocessor_utils import dataset_preprocessor
 
 preprocessor_dict_local = {}
 
@@ -46,4 +47,5 @@ def preprocess_foo():
         "cat_idx": [],
         "target_type": "binary",
         "num_classes": 1,
+    }
     }

@@ -6,6 +6,7 @@ all subsamples are compared to the max sample size
 output - text to the screen and a plot
 
 """
+
 import argparse
 import os
 import pickle
@@ -19,9 +20,9 @@ import numpy as np
 from pytorch_lightning import seed_everything
 from scipy.spatial.distance import cosine
 
-from tabzilla_alg_handler import ALL_MODELS  # , get_model
-from tabzilla_datasets import TabularDataset
-from tabzilla_utils import get_experiment_parser
+from alg_handler import ALL_MODELS  # , get_model
+from datasets import TabularDataset
+from utils import get_experiment_parser
 from utils.io_utils import get_output_path
 
 # some setup for the experiment to save XAI results
@@ -53,17 +54,9 @@ parser.add_argument(
     help="name of the algorithm",
 )
 
-# parser.add_argument(
-#     "--xai_config",
-#     required=True,
-#     type=str,
-#     # choices=ALL_MODELS,
-#     help="config file for the XAI method",
-# )
 
 args = parser.parse_args()
-# args.use_gpu = False
-print(f"ARGS: {args}")
+# print(f"ARGS: {args}")
 
 
 # now parse the dataset and search config files
@@ -100,11 +93,6 @@ X_val = dataset.X[val_idx, :]
 X_train = np.array(X_train, dtype=float)
 X_test = np.array(X_test, dtype=float)
 X_val = np.array(X_val, dtype=float)
-
-# cast numpy to torch
-# X_train_torch = torch.tensor(X_train).float().cuda()
-# X_test_torch = torch.tensor(X_test).float().cuda()
-# X_val_torch = torch.tensor(X_val).float().cuda()
 
 
 def get_sample_list(x):
@@ -210,38 +198,6 @@ with open(tree_shap_file, "rb") as f:
 num_features = X_train.shape[1]
 sample_list = get_sample_list(X_train)
 max_sample = max(sample_list)
-
-
-# for a_sample in sample_list:
-#     dist = []
-#     for a_repeat in range(repeats):
-#         # start = time.time()
-
-#         # load the explanations
-#         fastshap_file = get_output_path(
-#             model_args,
-#             directory=directory,
-#             filename="fastshap",
-#             extension=f"sample_{a_sample}_repeat_{a_repeat}",
-#             file_type="pkl",
-#         )
-
-#         with open(fastshap_file, "rb") as f:
-#             fastshap_list = pickle.load(f)
-
-#         # Calculate the average cosine distance between ts and sv (agreement)
-
-#         for i in range(ts.shape[0]):
-#             tmp_dist = cosine(ts[i, :], fastshap_list[i][:, 1])
-#             dist.append(tmp_dist)
-
-#     # elapsed = time.time() - start
-#     print(
-#         f"{a_sample:5d}, {len(dist):3d}  {np.array(dist).mean():.3f}, {np.array(dist).std():.3f}"
-#     )
-
-
-# load the explanations
 
 
 # Calculate the average cosine distance between best_shap (using max_samples) and fast_shap (agreement)

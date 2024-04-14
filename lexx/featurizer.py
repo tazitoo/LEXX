@@ -2,9 +2,10 @@ from pathlib import Path
 
 import pandas as pd
 from pymfe.mfe import MFE
-from tabzilla_data_processing import process_data
-from tabzilla_datasets import TabularDataset
 from tqdm import tqdm
+
+from data_processing import process_data
+from datasets import TabularDataset
 
 # Subset of: ['landmarking', 'general', 'statistical', 'model-based', 'info-theory', 'relative', 'clustering',
 # 'complexity', 'itemset', 'concept']
@@ -125,4 +126,5 @@ def featurize_all_datasets():
         computed_features.to_csv(output_file)
 
 
+featurize_all_datasets()
 featurize_all_datasets()

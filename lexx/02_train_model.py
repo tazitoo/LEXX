@@ -13,20 +13,18 @@ from typing import NamedTuple
 
 import optuna
 
-optuna.logging.set_verbosity(optuna.logging.ERROR)
-from models.basemodel import BaseModel
-
-# from models.tree_models import XGBoost
-from tabzilla_alg_handler import ALL_MODELS, get_model
-from tabzilla_datasets import TabularDataset
-from tabzilla_utils import (
+from alg_handler import ALL_MODELS, get_model
+from datasets import TabularDataset
+from lexx_utils import (
     ExperimentResult,
     cross_validation,
     final_evaluation,
     get_experiment_parser,
     get_scorer,
 )
+from models.basemodel import BaseModel
 
+optuna.logging.set_verbosity(optuna.logging.ERROR)
 
 class TabZillaObjective(object):
     """
@@ -398,6 +396,9 @@ if __name__ == "__main__":
         model_args.scale_numerical_features,
         model_args,
         best_params,
+        save_model=True,
+        extension="best",
+    )
         save_model=True,
         extension="best",
     )

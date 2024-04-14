@@ -51,10 +51,10 @@ from pytorch_lightning import seed_everything
 # from shap import KernelExplainer as ke
 # from models.basemodel import BaseModel
 # from models.tree_models import XGBoost
-from tabzilla_alg_handler import ALL_MODELS, get_model
-from tabzilla_data_processing import process_data
-from tabzilla_datasets import TabularDataset
-from tabzilla_utils import get_experiment_parser
+from alg_handler import ALL_MODELS, get_model
+from data_processing import process_data
+from datasets import TabularDataset
+from lexx_utils import get_experiment_parser
 from utils.io_utils import get_output_path, get_sample_list
 
 # some setup for the experiment to save XAI results
@@ -87,8 +87,6 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-# args.use_gpu = False
-# print(f"ARGS: {args}")
 
 
 # now parse the dataset and search config files
@@ -98,8 +96,6 @@ experiment_args = experiment_parser.parse_args(
     args="-experiment_config " + args.experiment_config
 )
 print(f"EXPERIMENT ARGS: {experiment_args}")
-
-# sys.exit()
 
 # set random seed for repeatability
 seed_everything(experiment_args.subset_random_seed, workers=True)
@@ -115,11 +111,6 @@ train_idx = dataset.split_indeces[isplit]["train"]
 val_idx = dataset.split_indeces[isplit]["val"]
 test_idx = dataset.split_indeces[isplit]["test"]
 
-# X_train = dataset.X[train_idx, :]
-# y_train = dataset.y[train_idx]
-# X_test = dataset.X[test_idx, :]
-# y_test = dataset.y[test_idx]
-# X_val = dataset.X[val_idx, :]
 
 data_processed = process_data(dataset, train_idx, val_idx, test_idx)
 X_train, y_train = data_processed["data_train"]
@@ -220,16 +211,6 @@ for a_sample in sample_list:
         # attribute(inputs, baselines=None, target=None, additional_forward_args=None,
         #           feature_mask=None, n_samples=25, perturbations_per_eval=1, return_input_shape=True,
         #           show_progress=False)
-
-        # fastshap_list = []
-        # # for idx_sample in range(X_val.shape[0]):
-        # #     x = X_val[idx_sample, :].reshape(1, -1)
-        # for idx_sample in range(X_train.shape[0]):
-        #     x = X_train[idx_sample, :].reshape(1, -1)
-
-        #     # compute fastshap explanations
-        #     fastshap_values = fastshap.shap_values(x)[0]
-        #     fastshap_list.append(fastshap_values)
 
         # save the explanations
         ks_file = get_output_path(

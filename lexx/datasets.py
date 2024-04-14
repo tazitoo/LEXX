@@ -108,7 +108,7 @@ class TabularDataset(object):
 
     def cat_feature_encode(self):
         # print("cat_feature_encode...")
-        if not self.cat_dims is None:
+        if self.cat_dims is not None:
             raise RuntimeError(
                 "cat_dims is already set. Categorical feature encoding might be running twice."
             )

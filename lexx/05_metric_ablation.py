@@ -8,9 +8,6 @@ https://github.com/capitalone/ablation/blob/main/examples/example_model_agnostic
 import argparse
 import os
 import pickle
-
-# import sys
-# import time
 from collections import namedtuple
 from pathlib import Path
 
@@ -18,34 +15,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import rbo
-
-# import seaborn as sns
-# import shapreg
-# from captum.attr import KernelShap
-# from fastshap import KernelExplainer
 import torch
 import torch.nn as nn
 from ablation.ablation import Ablation
 from ablation.dataset import NumpyDataset
 from ablation.perturb import generate_perturbation_distribution
-
-# from fastshap import FastSHAP, KLDivLoss, Surrogate
-# from fastshap.utils import MaskLayer1d
-# from sklearn.model_selection import train_test_split
 from pytorch_lightning import seed_everything
 from scipy.stats import spearmanr
 
-# from sklearn.compose import ColumnTransformer
-# from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import FunctionTransformer, OrdinalEncoder
-# from scipy.spatial.distance import cosine
-# from shap import KernelExplainer as ke
-# from models.basemodel import BaseModel
-# from models.tree_models import XGBoost
-from tabzilla_alg_handler import ALL_MODELS, get_model
-from tabzilla_data_processing import process_data
-from tabzilla_datasets import TabularDataset
-from tabzilla_utils import get_experiment_parser
+from alg_handler import ALL_MODELS, get_model
+from data_processing import process_data
+from datasets import TabularDataset
+from lexx_utils import get_experiment_parser
 from utils.io_utils import get_output_path, get_sample_list
 from utils.metric_utils import ranking_array
 
@@ -62,12 +43,6 @@ def prepare_ablation_dataset(dataset):
     val_idx = dataset.split_indeces[isplit]["val"]
     test_idx = dataset.split_indeces[isplit]["test"]
 
-    # X_train = dataset.X[train_idx, :]
-    # y_train = dataset.y[train_idx]
-    # X_test = dataset.X[test_idx, :]
-    # y_test = dataset.y[test_idx]
-    # X_val = dataset.X[val_idx, :]
-
     data_processed = process_data(dataset, train_idx, val_idx, test_idx)
     X_train, y_train = data_processed["data_train"]
     X_test, y_test = data_processed["data_test"]
@@ -77,11 +52,6 @@ def prepare_ablation_dataset(dataset):
     X_train = np.array(X_train, dtype=float)
     X_test = np.array(X_test, dtype=float)
     # X_val = np.array(X_val, dtype=float)
-
-    # provide indices for categorical and numerical features
-    # cat_ix = dataset.cat_idx
-    # idx = np.arange(dataset.num_features)
-    # num_ix = [i for i in idx if i not in dataset.cat_idx]
 
     # we don't get feature names in the meta-data - so we'll just use the column indices
     feature_names = [f"feature_{i}" for i in range(dataset.num_features)]
@@ -357,5 +327,7 @@ rho = spearmanr(known_rank, abc_df["rank"])
 rbo = rbo.RankingSimilarity(known_rank, abc_df["rank"].values.T).rbo()
 
 with open("ablation_correlation.txt", "w") as f:
+    f.write(f"RBO: {rbo}\n")
+    f.write(f"RHO: {rho.correlation}\n")
     f.write(f"RBO: {rbo}\n")
     f.write(f"RHO: {rho.correlation}\n")

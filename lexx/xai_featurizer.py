@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pandas as pd
 from pymfe.mfe import MFE
-from tabzilla_data_processing import process_data
-from tabzilla_datasets import TabularDataset
+from data_processing import process_data
+from datasets import TabularDataset
 from tqdm import tqdm
 
 # Subset of: ['landmarking', 'general', 'statistical', 'model-based', 'info-theory', 'relative', 'clustering',

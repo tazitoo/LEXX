@@ -3,7 +3,8 @@ import functools
 import numpy as np
 import openml
 import pandas as pd
-from tabzilla_preprocessor_utils import cv_n_folds, dataset_preprocessor
+
+from preprocessor_utils import cv_n_folds, dataset_preprocessor
 
 preprocessor_dict = {}
 
@@ -403,4 +404,5 @@ for kwargs in openml_tasks:
 
     dataset_preprocessor(preprocessor_dict, dataset_name, generate_split=False)(
         functools.partial(preprocess_openml, **kwargs)
+    )
     )
